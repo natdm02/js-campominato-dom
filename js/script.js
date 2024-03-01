@@ -71,6 +71,7 @@ function createGrid(bomb, cellNumber, cellRow){
   }
 }
 
+// 100/81/49
 
 let button = document.getElementById('button');
 button.addEventListener('click', function(){
@@ -112,6 +113,7 @@ button.addEventListener('click', function(){
     createGrid(arrayBomb, cellNumber, cellRow);
 });
 
+//  bomb 
 
 function showAllBombs(bombs_array){
   const cells = document.getElementsByClassName('square');
@@ -125,6 +127,7 @@ function showAllBombs(bombs_array){
   };
 }
 
+// mumeri random 
 
 function createArrayBomb(min, max){
   let bomb = [];
