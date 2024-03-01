@@ -14,7 +14,11 @@ function createElementGrid(number, cellRow){
   return element;
 }
 
-function createGrid(cellNumber, cellRow){
+let cont = 0;
+
+function createGrid(bomb, cellNumber, cellRow){
+
+  cont= 0;
 
   let grid = document.getElementById('grid');
   
@@ -33,8 +37,33 @@ function createGrid(cellNumber, cellRow){
   
       square.addEventListener('click', function(){
           this.classList.toggle('clicked');
-          console.log(`Hai selezionato il numero ${this.innerText}`)
-      });
+          // console.log(`Hai selezionato il numero ${this.innerText}`)
+
+          if(bomb.includes(parseInt(this.innerText))){
+                
+            // creo il this per cambio colore (rosso) quando esce una bomba
+            
+            this.classList.add('red');
+            
+            alert(`BOOM! Hai preso una bomba ${this.innerText}`);
+            
+            // richiamo la funzione per mostrare tutte le bombe 
+
+            showAllBombs(bomb);
+        
+            // mostro il punteggio fatto dopo che esce la bomba
+        
+            document.getElementById('point').innerHTML = `Il tuo punteggio è: ${cont}`;
+       
+            // associo alla griglia la funzione che non si può fare più nulla dopo una bomba
+
+            grid.classList.add('event-none');
+        }  
+        else{
+            cont++
+        }
+    });
+      
   
 // creo un figlio del richiamo della funzione
 
@@ -43,51 +72,74 @@ function createGrid(cellNumber, cellRow){
 }
 
 
-// 'BONUS'
-
 let button = document.getElementById('button');
 button.addEventListener('click', function(){
 
-  let difficult = document.getElementById('level').value;
+    let difficult = document.getElementById('level').value;
 
-  let cellNumber;
-  let cellRow;
+    let arrayBomb = [];
+
+
+    let cellNumber;
+    let cellRow;
 
     switch(difficult){
-    case 'Easy':
-        cellNumber = 100;
-        cellRow = 10;
+        case 'Easy':
+            cellNumber = 100;
+            cellRow = 10;
+            break;
 
-// richiamo funzione 
+        case 'Medium':
+            cellNumber = 81;
+            cellRow = 9; 
+            break;
 
-        createGrid(cellNumber, cellRow);
-        break;
-    case 'Medium':
-        cellNumber = 81;
-        cellRow = 9; 
+        case 'Hard':
+            cellNumber = 49;
+            cellRow = 7;
+            break;
 
-// richiamo funzione 
-
-        createGrid(cellNumber, cellRow);
-        break;
-    case 'Hard':
-        cellNumber = 49;
-        cellRow = 7;
-
-// richiamo funzione 
-
-        createGrid(cellNumber, cellRow);
-        break;
-    default:
-        cellNumber = 100;
-        cellRow = 10;
-
-// richiamo funzione 
-
-        createGrid(cellNumber, cellRow);
-        break;
+        default:
+            cellNumber = 100;
+            cellRow = 10;
+            break;
     }
+
+    arrayBomb = createArrayBomb(1, cellNumber);
+    console.log(arrayBomb)
+
+    
+    createGrid(arrayBomb, cellNumber, cellRow);
 });
+
+
+function showAllBombs(bombs_array){
+  const cells = document.getElementsByClassName('square');
+  for (let i=0; i < cells.length; i++){
+      let cell = cells[i];
+      if(bombs_array.includes(parseInt(cell.innerText))){
+          cell.classList.add('clicked');
+          cell.classList.add('red');
+     }
+
+  };
+}
+
+
+function createArrayBomb(min, max){
+  let bomb = [];
+  let i = 0;
+  while(i < 16){
+      let numberRandom = Math.floor(Math.random() * (max - min +1)+ min);
+      if(!bomb.includes(numberRandom)){
+          bomb.push(numberRandom);
+          i++;
+      }
+  }
+  return bomb;
+}
+
+
 
 
 
